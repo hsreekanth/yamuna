@@ -1,0 +1,231 @@
+<app-navbar></app-navbar>
+<div class="container-fluid">
+    <div class="row">
+        <div class="padding">
+            <div class="input-group custom-dropdown-width mt-2">
+                <label for="rows-input"
+                    style="margin-right: 38px; font-weight: bold;  color: red; font-size: 17px;">No.of Records :</label>
+                <input type="number" class="form-control rounded custom-input " id="rows-input"
+                    aria-label="Enter No of Rows" [(ngModel)]="numRows" min="0" required>
+            </div>
+            <div class=" custom-dropdown-width1 input-group mt-2">
+                <label for="use-case-dropdown"
+                    style="margin-right: 33px; font-weight: bold;  color: red; font-size: 17px;">Select Use
+                    Case:</label>
+                <ngx-select-dropdown [options]="dropdownOptions" [(ngModel)]="selectedOption" [config]="dropdownConfig"
+                    id="use-case-dropdown" class="custom-dropdown" (change)="onUseCaseChange()">
+                </ngx-select-dropdown>
+            </div>
+            <div class=" custom-dropdown-width2 input-group mt-2" *ngIf="selectedOption === '7. Custom Data'">
+                <label for="column-case-dropdown"
+                    style="margin-right: 20px; font-weight: bold;  color: red; font-size: 17px;">Select
+                    Column(s):</label>
+                <ng-multiselect-dropdown [placeholder]="'Select Columns'" [settings]="dropdownSettings"
+                    [data]="dropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+                    (onDeSelect)="onItemDeselect($event)" class="custom-dropdown">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 custom-padding">
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-success custom-btn " (click)="  generateData()">Generate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class=" ml-auto mt-3">
+    <div class="scroll-bar">
+        <table class="my-table" *ngIf="selectedOption === '2. Cross-Sell/Up-Sell' && showTable">
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Customer Name</th>
+                    <th>Customer Email</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Country</th>
+                    <th>Phone Number</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Senior Citizen</th>
+                    <th>Tenure in Months</th>
+                    <th>Contract Length</th>
+                    <th>Service Type</th>
+                    <th>Plan Type</th>
+                    <th>Plan Price</th>
+                    <th>Plan Activation Date</th>
+                    <th>Plan Deactivation Date</th>
+                    <th>Bandwidth</th>
+                    <th>Contention Ratio</th>
+                    <th>Data Usage in Months (GB)</th>
+                    <th>Payment Method</th>
+                    <th>Payment History</th>
+                    <th>Network Type</th>
+                    <th>Network Performance Metrics</th>
+                    <th>Constraints</th>
+                    <th>Wireless Complaints</th>
+                    <th>Wireline Complaints</th>
+                    <th>SD-WAN Complaints</th>
+                    <th>Customer Feedback Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let customer of customers ">
+                    <td>{{ customer['Customer ID'] }}</td>
+                    <td>{{ customer['Customer Name'] }}</td>
+                    <td>{{ customer['Customer Email'] }}</td>
+                    <td>{{ customer['Gender'] }}</td>
+                    <td>{{ customer['Age'] }}</td>
+                    <td>{{ customer['Country'] }}</td>
+                    <td>{{ customer['Phone Number'] }}</td>
+                    <td>{{ customer['City'] }}</td>
+                    <td>{{ customer['Address'] }}</td>
+                    <td>{{ customer['Senior Citizen'] }}</td>
+                    <td>{{ customer['Tenure in Months'] }}</td>
+                    <td>{{ customer['Contract Length'] }}</td>
+                    <td>{{ customer['Service Type'] }}</td>
+                    <td>{{ customer['Plan Type'] }}</td>
+                    <td>{{ customer['Plan Price'] }}</td>
+                    <td>{{ customer['Plan Activation Date'] }}</td>
+                    <td>{{ customer['Plan Deactivation Date'] }}</td>
+                    <td>{{ customer['Bandwidth'] }}</td>
+                    <td>{{ customer['Contention Ratio'] }}</td>
+                    <td>{{ customer['Data Usage in Months(GB)'] }}</td>
+                    <td>{{ customer['Payment Method'] }}</td>
+                    <td>{{ customer['Payment History'] }}</td>
+                    <td>{{ customer['Network Type'] }}</td>
+                    <td>{{ customer['Network Performance Metrics'] }}</td>
+                    <td>{{ customer['Constraints'] }}</td>
+                    <td>{{ customer['Wireless Complaints'] }}</td>
+                    <td>{{ customer['Wireline Complaints'] }}</td>
+                    <td>{{ customer['SD-WAN Complaints'] }}</td>
+                    <td>{{ customer['Customer Feedback Score'] }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="my-table" *ngIf="selectedOption === '7. Custom Data' && showSelectedTable">
+            <thead>
+                <th *ngFor="let column of selectedColumns">{{ column }}</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let customer of customers">
+                    <td *ngFor="let column of selectedColumns">{{ customer[column] }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center mt-3">
+            <button type="button" class="btn btn-success download-button" (click)="downloadData()">Download</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+input:invalid:focus {
+    border-color: red;
+    box-shadow: none;
+}
+
+
+.scroll-bar {
+    height: 365px;
+    width: 1230px;
+    border: 1px solid gray;
+    overflow: auto;
+    white-space: nowrap;
+    margin-left: 25px;
+    margin-top: 30px;
+    margin-bottom: 2px;
+
+}
+
+.padding {
+    padding-left: 20px;
+
+}
+
+.custom-padding {
+    margin-left: 530px;
+    margin-top: -58px;
+}
+
+.custom-btn {
+    width: 120px;
+    height: 40px;
+    font-size: 22px;
+    padding: 2px;
+}
+
+.download-button {
+    width: 115px;
+    height: 40px;
+    font-size: 19px;
+    padding: 2px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid black;
+}
+
+th {
+    background-color: #41acd6;
+    font-weight: bold;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.my-table {
+    margin: 20px;
+}
+
+.custom-dropdown {
+    width: 65%;
+}
+
+.custom-input {
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+}
+
+.custom-dropdown-width2 {
+    width: 526px;
+}
+
+
+.custom-dropdown-width {
+    width: 500px;
+}
+
+.custom-dropdown-width1 {
+    width: 520px;
+}
